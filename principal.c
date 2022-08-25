@@ -16,22 +16,14 @@ int main()
 
       switch (opt)
       {
-      case  1: //Cadastro Usina - recebimento de dados
+      case  1: //Cadastro Usina - recebimento de dados e verificações
          
-         cadastro_usina();
-
-         //Cadastro Usina - verificacao de dados
-         if (!valida_cnpj(usina))
-            return (NULL);
-         if (!valida_potencia(usina))
-            return (NULL);
-         if (!valida_data(usina))
-            return (NULL);
-         
+         recebimento_dados_usina();
          break;
 
-      case 2: //Cadastro Consumidor
-          printf("oi2");
+      case 2: //Cadastro Consumidor - recebimento de dados e verificações
+          
+         recebimento_dados_consumidor();
          break;
 
       }

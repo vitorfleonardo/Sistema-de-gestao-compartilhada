@@ -1,41 +1,60 @@
 #ifndef _LIBRARY_H_
 #define _LIBRARY_H_
 
+struct data_inicio_operacao
+{
+    int mes;
+    int dia;
+    int ano;
+};
+
 struct cadastro_usina
 {
-    char nome[61];
+    char nome[21]; 
     float potencia;
-    char cnpj[14];
-    char data[8];
+    char cnpj[19];
+    
+    struct data_inicio_operacao data;
 };
 struct cadastro_usina usina;
 
 struct cadastro_consumidor
 {
-    char cnpj[14];
-    char cpf[11]; 
-    char nome[61];
+    char cnpj[19];
+    char cpf[15]; 
+    char nome[21];
 };
 struct cadastro_consumidor consumidor;
 
 //**********Geral**********
 void menu(void); //Procedimento - exibir Menu
 
+void procedimento_sucesso(void); //Procedimento - definir fim e sucesso do procedimento selecionado pelo usuario
 
+//**********validacoes**********
+int valida_cnpj(char *cnpj); //Funcao - validar CNPJ
+
+int valida_potencia(float pot); //Funcao - validar potencia estimada
+
+int valida_data(int dia, int mes, int ano); //Funcao - validar a data de inicio de operacao
 
 //**********Usina**********
-int cadastro_usina(); //Procedimento - recebimento de dados
+void cadastro_usina_arquivo(char *cnpj, int dia, int mes, int ano, float potencia, char *nome); //Arquivando informacoes da Usina
 
-int valida_cnpj(usina); //Funcao - validar o CNPJ 
-
-int valida_data(usina); //Funcao - validar a data de inicio de operacao
-
-int valida_potencia(usina); //Funcao - validar potencia estimada
+void recebimento_dados_usina(void); //Procedimento - recebimento de dados Usina
 
 //**********Consumidor**********
-int valida_cnpj(consumidor); //Funcao - validar o CNPJ
+void recebimento_dados_consumidor(void); //Procedimento - recebimento de dados Consumidor
+void cadastro_consumidor_arquivo(char *cnpj, char *cpf, char *nome); //Arquivando informacoes da Consumidor
 
-int valida_cpf(consumidor); //Funcao - validar o CPF
+
+
+
+
+
+
+
+
 
 
 
