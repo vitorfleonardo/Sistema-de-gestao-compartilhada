@@ -18,12 +18,22 @@ int main()
       {
       case  1: //Cadastro Usina - recebimento de dados e verificações
          
-         recebimento_dados_usina();
+         cadastro_usina();
          break;
 
       case 2: //Cadastro Consumidor - recebimento de dados e verificações
           
-         recebimento_dados_consumidor();
+         cadastro_consumidor();
+         break;
+      
+      case 3: //Cadastro Contrato - recebimento de dados se Usina e consumidor cadastrados
+          
+         cadastro_contrato();
+         break;
+      
+      case 4: //Cadastro Contrato - recebimento de dados se Usina e consumidor cadastrados
+          
+         consulta_usinas_cadastradas();
          break;
 
       }

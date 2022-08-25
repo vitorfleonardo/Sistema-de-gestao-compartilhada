@@ -140,7 +140,7 @@ int valida_cpf(char *cpf) //Funcao - validar CPF
 }
 
 //**********Usina**********
-void cadastro_usina_arquivo(char *cnpj, int dia, int mes, int ano, float potencia, char *nome) //Arquivando informacoes da Usina
+void cadastro_usina_arquivo(char *cnpj, int dia, int mes, int ano, float potencia, char *nome) //Procedimento arquivar informacoes da Usina
 {
     FILE *fp; // Arquivando informacoes do Usina
 
@@ -150,26 +150,32 @@ void cadastro_usina_arquivo(char *cnpj, int dia, int mes, int ano, float potenci
     fclose(fp);    
 }
 
-void recebimento_dados_usina(void) //Procedimento - recebimento de dados para CADASTRO USINA
+int recebimento_dados_usina(void) //Funcao - recebimento de dados para CADASTRO USINA
 {
    printf("Digite o CNPJ (xx.xxx.xxx/xxxx-xx):\n");
    fflush(stdin);
    fgets(usina.cnpj, 19, stdin);
 
    if (!valida_cnpj(usina.cnpj))
-      printf("CNPJ invalido\n");
+   {
+        printf("CNPJ invalido\n");
+        return 0;
+   }
    else
    {
-      printf("Digite o Nome:\n");
-      fflush(stdin);
-      fgets(usina.nome, 21, stdin);
+        printf("Digite o Nome:\n");
+        fflush(stdin);
+        fgets(usina.nome, 21, stdin);
 
-      printf("Digite a Data de Inicio de Operacao (xx/xx/xxxx):\n");
-      fflush(stdin);
-      scanf("%d/%d/%d", &usina.data.dia, &usina.data.mes, &usina.data.ano);
+        printf("Digite a Data de Inicio de Operacao (xx/xx/xxxx):\n");
+        fflush(stdin);
+        scanf("%d/%d/%d", &usina.data.dia, &usina.data.mes, &usina.data.ano);
 
       if (!valida_data(usina.data.dia, usina.data.mes, usina.data.ano))
+      {
         printf("Data invalida\n");
+        return 0;
+      }
       else
       {
         printf("Digite a Potencia estimada (em MW):\n");
@@ -177,18 +183,45 @@ void recebimento_dados_usina(void) //Procedimento - recebimento de dados para CA
         scanf("%f", &usina.potencia);
 
         if (!valida_potencia(usina.potencia))
+        {
             printf("Potencia invalida\n");
+            return 0;
+        }
         else
-            cadastro_usina_arquivo(usina.cnpj, usina.data.dia, usina.data.mes, usina.data.ano, 
-            usina.potencia, usina.nome);
-            procedimento_sucesso();
+            return 1;
       }    
    }      
 }
 
-void lista_usinas_cadastrados(void) //lista dos consumidores registrados no arquivo txt
+void cadastro_usina(void) //Procedimento - valida o recebimento de dados e chama procedimento de arquivar
 {
+    if (recebimento_dados_usina() == 1)
+    {
+        cadastro_usina_arquivo(usina.cnpj, usina.data.dia, usina.data.mes, usina.data.ano, 
+        usina.potencia, usina.nome);
+        procedimento_sucesso();
+    }
+    
+}
 
+void consulta_usinas_cadastradas(void) //Procedimento - le o arquivo com usinas cadastradas e exibe elas
+{
+    FILE *fp; // Arquivando informacoes do Usina
+
+    fp=fopen("cadastro-usina.txt", "rt");
+
+    if(fp != NULL)
+    {
+        char linha[100];
+
+        while (!feof(fp))
+        {
+            fgets(linha, 100, fp);
+            puts(linha);
+        }
+    }
+    
+    fclose(fp);    
 }
 
 //**********Consumidor**********
@@ -202,7 +235,7 @@ void cadastro_consumidor_arquivo(char *cnpj, char *cpf, char *nome) //Arquivando
     fclose(fp);    
 }
 
-void recebimento_dados_consumidor(void) //Procedimento - recebimento de dados para CADASTRO Consumidor
+int recebimento_dados_consumidor(void) //Funcao - recebimento de dados para CADASTRO Consumidor
 {
     int opt;
 
@@ -226,35 +259,71 @@ void recebimento_dados_consumidor(void) //Procedimento - recebimento de dados pa
     
 
     if ((opt == 1 && !valida_cnpj(consumidor.cnpj)) || (opt == 2 && !valida_cpf(consumidor.cpf)))
+    {
         printf("identificacao invalida\n");
+        return 0;
+    }
     else
     {
         printf("\nDigite o Nome:\n");
         fflush(stdin);
         fgets(consumidor.nome, 21, stdin);
 
-        cadastro_consumidor_arquivo(consumidor.cnpj, consumidor.cpf, consumidor.nome);
-        procedimento_sucesso();
+        return 1;
     }              
 }
 
-void lista_consumidor_cadastrados(void) //lista dos consumidores registrados no arquivo txt
+void cadastro_consumidor(void) //Procedimento - valida o recebimento de dados e chama procedimento de arquivar
 {
-
+    if (recebimento_dados_consumidor() == 1)
+    {
+        cadastro_consumidor_arquivo(consumidor.cnpj, consumidor.cpf, consumidor.nome);
+        procedimento_sucesso();
+    }
+    
 }
 
 //**********Contrato**********
-void cadastro_contrato()
+void cadastro_contrato_arquivo(char *usina_cnpj, char *consumidor_cnpj, char *consumidor_cpf, int dia, int mes, int ano, float potencia) //Procedimento arquivar informacoes do contrato
 {
-    int usina, consumido;
+    FILE *fp; // Arquivando informacoes do Usina
 
-    lista_usinas_cadastradas();
+    fp=fopen("cadastro-contrato.txt", "a");
+    if(fp != NULL)
+        fprintf(fp, "%s;%s%s;%d;%d;%d;%f", usina_cnpj, consumidor_cnpj, consumidor_cpf, dia, mes, ano, potencia);
+    fclose(fp);    
+}
 
-    printf("Escolha o numero da usina participante do contrato:\n");
-    scanf("%d", &usina);
+void cadastro_contrato(void) //Procedimento - recebimento de dados para Contrato
+{
+    printf("\nInforme os dados da parte contratada (usina)\n");
 
-    lista_consumidor_cadastrados();
+    if (recebimento_dados_usina() == 1)
+    {
+        printf("\nInforme os dados da parte contratante (consumidor)\n");
+        if (recebimento_dados_consumidor() == 1)
+        {
+            printf("Digite a Data de Inicio do Contrato entre as partes (xx/xx/xxxx):\n");
+            fflush(stdin);
+            scanf("%d/%d/%d", &contrato.dia, &contrato.mes, &contrato.ano);
 
-    printf("Escolha o numero do consumidor participante do contrato:\n");
-    scanf("%d", &consumidor);
+            if (!valida_data(contrato.dia, contrato.mes, contrato.ano))
+                printf("Data invalida\n");
+            else
+            {
+                printf("Digite a Potencia Contratada (em MW):\n");
+                fflush(stdin);
+                scanf("%f", &contrato.potencia);
+
+                if (!valida_potencia(contrato.potencia))
+                    printf("Potencia invalida\n");
+                else
+                {
+                    cadastro_contrato_arquivo(usina.cnpj, consumidor.cnpj, consumidor.cpf, contrato.dia, 
+                    contrato.mes, contrato.ano, contrato.potencia);
+                    procedimento_sucesso();
+                }
+            }
+        }
+    }
 }
