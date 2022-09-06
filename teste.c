@@ -1,39 +1,63 @@
-#include <stdio.h>
-#include <stdlib.h>
 
-
-
-void cadastro_usina_arquivo(char *cnpj, char *nome, char *data, float potencia)
+void casdatro()
 {
-    FILE *fp;
 
-    fp=fopen("test.txt", "a");
-    if(fp == NULL)
-        exit(-1);
+    int opt;
 
-    /* Arquivando CNPJ válido da usina */
-    fprintf(fp, "CNPJ da Usina: %s\n", cnpj);
+    printf("\n1) Cadastrar usando CNPJ\n");
+    printf("2) Cadastrar usando CPF\n");
+    printf("\nEscolha o numero da opcao desejada:\n");
+    scanf("%d", &opt);
 
-    /* Arquivando Nome da usina */
-    fprintf(fp, "Nome da Usina: %s\n", nome);
-    
-    /* Arquivando a data de Inicio de Operacao */
-    fprintf(fp, "Data de Inicio de Operacao: %s\n", data);
-
-    /* print integers and floats */
-    fprintf(fp, "Potencia estimada da Usina: %f\n", potencia);
-
-    fclose(fp);
-}
-
-int main()
-{
-    char cad[] = "hello", name[] = "sla", date[] = "22/22";
-    float pot = 3.5;
-
-    cadastro_usina_arquivo(cad, name, date, pot);
-
-    return 0;
+    if (opt == 1) //Cadastro Conumidor - usando CNPJ
+    {
+        
+        do
+        {
+            printf("Digite o CNPJ (xx.xxx.xxx/xxxx-xx):\n");
+            fflush(stdin);
+            fgets(consumidor.cnpj, 19, stdin);
 
 
+            if (verificaConsumidor()) //verifica se o consumidor ja esta cadastrado
+                printf("Consumidor ja cadastrada, digite novamente\n");
+            
+            if (!validaCnpj(consumidor.cnpj)) //verifica o cnpj do consumidor a ser cadastrado
+                printf("CNPJ invalido, digite novamente\n");
+
+        } while (verificaConsumidor() || !validaCnpj(consumidor.cnpj));
+        //loop que verifica se o valor digiado é valido ou se o consumidor já foi cadastrado
+
+    }  
+    else if (opt == 2) //Cadastro Conumidor - usando CPF
+    {
+        do
+        {
+            printf("\nDigite o CPF (xxx.xxx.xxx-xx):\n");
+            fflush(stdin);
+            fgets(consumidor.cnpj, 19, stdin);
+
+
+            if (verificaConsumidor()) //verifica se o consumidor ja esta cadastrado
+                printf("Consumidor ja cadastrado, digite novamente\n");
+            
+            if (!validaCpf(consumidor.cpf)) //verifica o cpfda usina a ser cadastrado
+                printf("CPF invalido, digite novamente\n");
+
+        } while (verificaConsumidor() || !validaCnpj(consumidor.cnpj));
+        //loop que verifica se o valor digiado é valido ou se o consumidor já foi cadastrado
+    } 
+
+
+    do
+    {
+        fflush(stdin);
+        printf("Digite o Nome da Usina:\n");
+        aux = scanf("%s", consumidor.nome); 
+
+        if (aux == 0)
+            printf("Nome invalido, digite novamente\n");
+
+    } while (aux == 0);
+    //receber e verificar nome da Usina
 }

@@ -61,7 +61,7 @@ void consulta_usinas_cadastradas(void); //Procedimento - le o arquivo com usinas
 //**********Consumidor**********
 void cadastro_consumidor_arquivo(char *cnpj, char *cpf, char *nome); //Arquivando informacoes da Consumidor
 
-int recebimento_dados_consumidor(void); //Funcao - recebimento de dados Consumidor
+void recebimento_dados_consumidor(void); //Funcao - recebimento de dados Consumidor
 
 void cadastro_consumidor(void); //Procedimento - valida o recebimento de dados e chama procedimento de arquivar
 

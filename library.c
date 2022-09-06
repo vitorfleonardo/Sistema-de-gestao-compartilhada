@@ -235,7 +235,7 @@ void cadastro_consumidor_arquivo(char *cnpj, char *cpf, char *nome) //Arquivando
     fclose(fp);    
 }
 
-int recebimento_dados_consumidor(void) //Funcao - recebimento de dados para CADASTRO Consumidor
+void recebimento_dados_consumidor(void) //Procedimento - recebimento de dados para CADASTRO Consumidor
 {
     int opt;
 
@@ -259,29 +259,19 @@ int recebimento_dados_consumidor(void) //Funcao - recebimento de dados para CADA
     
 
     if ((opt == 1 && !valida_cnpj(consumidor.cnpj)) || (opt == 2 && !valida_cpf(consumidor.cpf)))
-    {
         printf("identificacao invalida\n");
-        return 0;
-    }
     else
     {
         printf("\nDigite o Nome:\n");
         fflush(stdin);
         fgets(consumidor.nome, 21, stdin);
 
-        return 1;
+        cadastro_consumidor_arquivo(consumidor.cnpj, consumidor.cpf, consumidor.nome);
+        procedimento_sucesso();
     }              
 }
 
-void cadastro_consumidor(void) //Procedimento - valida o recebimento de dados e chama procedimento de arquivar
-{
-    if (recebimento_dados_consumidor() == 1)
-    {
-        cadastro_consumidor_arquivo(consumidor.cnpj, consumidor.cpf, consumidor.nome);
-        procedimento_sucesso();
-    }
-    
-}
+
 
 //**********Contrato**********
 void cadastro_contrato_arquivo(char *usina_cnpj, char *consumidor_cnpj, char *consumidor_cpf, int dia, int mes, int ano, float potencia) //Procedimento arquivar informacoes do contrato
