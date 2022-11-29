@@ -12,13 +12,13 @@ to control power plants (energy generators) and consumers (energy users) in ways
 6) exclude registered power plant;
 7) exclude registered consumer;
 
-Option 1: collect data from the power plant such as CNPJ, Name, date begin operation and estimate power (MW)
-Option 2: collect data from the consumer such as CNPJ or CPF and Name
-Option 3: collect data from registered consumer and power plant such as CNPJ (power plant), CNPJ or CPF (consumer), Date begin contract and Contracted power
-Option 4: list data from the power plant consulted
-Option 5: list data from the consumer consulted
-Option 6: delete all power plant data and contracts
-Option 7: delete all consumer data and contracts
+Option 1: collect data from the power plant such as CNPJ, Name, date begin operation and estimate power (MW);
+Option 2: collect data from the consumer such as CNPJ or CPF and Name;
+Option 3: collect data from registered consumer and power plant such as CNPJ (power plant), CNPJ or CPF (consumer), Date begin contract and Contracted power;
+Option 4: list data from the power plant consulted;
+Option 5: list data from the consumer consulted;
+Option 6: delete all power plant data and contracts;
+Option 7: delete all consumer data and contracts;
 
 ### Tecnologies:
 C99
